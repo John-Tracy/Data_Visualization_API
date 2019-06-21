@@ -1,0 +1,23 @@
+{
+  "name": "data_visualization_api",
+  "version": "0.0.1",
+  "description": "Serverless API that turns json into data visualizations",
+  "dependencies": {
+    "ajv": "^6.10.0",
+    "async": "^3.0.1",
+    "aws-serverless-express": "^3.3.6",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "gm": "^1.23.1"
+  },
+  "devDependencies": {},
+  "main": "lambda.js",
+  "scripts": {
+    "deploy": "claudia create --handler lambda.handler --deploy-proxy-api --region us-east-1",
+    "update": "claudia update",
+    "generate-proxy": "claudia generate-serverless-express-proxy --express-module app"
+  },
+  "author": "John Tracy",
+  "license": "MIT"
+}
