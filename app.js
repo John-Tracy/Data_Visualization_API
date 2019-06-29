@@ -44,7 +44,7 @@ app.post('/create/visual/:visual', (req, res) => {
 		console.log('success', success)
 		return res.json(success);
 	}, (error) => {
-		console.log('handled error')
+		console.log('handled error', error)
 		return res.json(error)
 	})
 
