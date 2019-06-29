@@ -4,17 +4,17 @@ const gm = require('gm');
 const findHighestDivisbleValue = require('../lib/findHighestDivisbleValue');
 const getAxisData = require('../lib/getAxisData');
 const calculatePlotPoints = require('../lib/calculatePlotPoints');
+const findHighestXYValues = require('../lib/findHighestXYValues');
 
 function ScatterPlot(data) {
-
 	/*
 		gm uses a cooridinate plane where 0 starts at the top left corner
 	*/
 	const imgWidth = 800;
 	const imgHeight = 500;
 
-	const yScale = 5;
-	const xScale = 8;
+	const yScale = imgHeight / 100;
+	const xScale = imgWidth / 100;
 	const bgColor = '#efefef';
 
 	const yAxisCoords = [100, 50, 100, 450];
@@ -23,24 +23,8 @@ function ScatterPlot(data) {
 	let self = this;
 	self.data = data;
 
-	self.findHighestXYValues = (scatterPlotData) => {
-		let coordData = scatterPlotData;
-		let highestXvalue = 0;
-		let highestYvalue = 0;
-		for(let i = 0; i < coordData.length; i++) {
-			if(coordData[i].x > highestXvalue){
-				highestXvalue = coordData[i].x;
-			}
-
-			if(coordData[i].y > highestYvalue){
-				highestYvalue = coordData[i].y;
-			}
-		}
-		return [highestXvalue, highestYvalue];
-	}
-
 	self.init = (resolve, reject) => {
-		let xyHighestInputValues = self.findHighestXYValues(self.data.data);
+		let xyHighestInputValues = findHighestXYValues(self.data.data);
 		console.log(xyHighestInputValues);
 		let HighestDivisbleValues = [
 			findHighestDivisbleValue(xyHighestInputValues[0], xScale),
@@ -73,7 +57,15 @@ function ScatterPlot(data) {
 		}
 
 		console.log('plotting points');
-		//let plotPoints = calculatePlotPoints(xAxisCoords, yAxisCoords, HighestDivisbleValues, self.data.data);
+		let plotPoints = calculatePlotPoints(xAxisCoords, yAxisCoords, HighestDivisbleValues, self.data.data);
+		console.log(plotPoints)
+		for(let i = 0; i < plotPoints.length; i++){
+			console.log('drawing point')
+			let x = plotPoints[i].x;
+			let y = plotPoints[i].y;
+			image.drawCircle(x, y, x + 3, y);
+		}
+
 
 		image.write('./tmp/brandNewImg1.jpg', (err) => {
 			if(err) {
